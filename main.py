@@ -63,10 +63,13 @@ def get_files(org, header_auth, repo, branch, search_dir):
     files = []
     if result["data"]["repository"]["filename"]:
         for file in result["data"]["repository"]["filename"]["entries"]:
-            if not bool(file["object"]["isBinary"]):
-                files.append({"path": file["path"],
-                              "text": file["object"]["text"]
-                              })
+            try:
+                if not bool(file["object"]["isBinary"]):
+                    files.append({"path": file["path"],
+                                  "text": file["object"]["text"]
+                                  })
+            except KeyError:
+                pass
     return files
 
 
